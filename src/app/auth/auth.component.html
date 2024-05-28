@@ -1,31 +1,27 @@
 <!-- auth.component.html -->
-<form nz-form [nzLayout]="'vertical'" (ngSubmit)="onSubmit()">
-    <nz-form-item>
-      <nz-form-label [nzSpan]="24" nzFor="username" nzRequired>Username</nz-form-label>
-      <nz-form-control [nzSpan]="24">
-        <input nz-input id="username" name="username" type="text" required placeholder="Enter your username" [(ngModel)]="name" />
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-      <nz-form-label [nzSpan]="24" nzFor="password" nzRequired>Password</nz-form-label>
-      <nz-form-control [nzSpan]="24">
-        <input nz-input id="password" name="password" type="password" required placeholder="Enter your password" [(ngModel)]="password" />
-      </nz-form-control>
-    </nz-form-item>
-    
-    <nz-form-item>
-        <nz-form-control [nzSpan]="24">
-          <label nz-checkbox nzFor="rememberMe">
-            <input type="checkbox" id="rememberMe" name="rememberMe" [(ngModel)]="rememberMe"> Remember Me
-          </label>
-        </nz-form-control>
-      </nz-form-item>
-  
-    <nz-form-item>
-      <nz-form-control [nzSpan]="24">
-        <button nz-button nzType="primary" type="submit">Login</button>
-      </nz-form-control>
-    </nz-form-item>
-  </form>
-  
+<form [formGroup]="form" nz-form [nzLayout]="'vertical'" (ngSubmit)="onSubmit()">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">Utilizator</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Numele este obligatoriu și conține doar litere">
+      <input nz-input formControlName="name" id="name" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password">Parolă</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Parola este obligatorie">
+      <input nz-input formControlName="password" id="password" type="password" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzSpan]="24">
+      <label nz-checkbox nzFor="rememberMe">
+        Remember Me  <input type="checkbox" id="rememberMe" name="rememberMe" formControlName="rememberMe">
+      </label>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzSpan]="24">
+      <button nz-button nzType="primary" type="submit">Login</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

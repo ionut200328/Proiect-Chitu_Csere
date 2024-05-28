@@ -8,6 +8,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthComponent } from './auth.component';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @NgModule({
   declarations: [AuthComponent],
@@ -17,6 +18,7 @@ import { AuthComponent } from './auth.component';
     ReactiveFormsModule,
     NzFormModule,
     NzInputModule,
+    NzSelectModule,
     NzButtonModule,
     NzNotificationModule,
     AuthRoutingModule

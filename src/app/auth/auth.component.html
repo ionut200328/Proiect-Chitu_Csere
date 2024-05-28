@@ -13,6 +13,14 @@
         <input nz-input id="password" name="password" type="password" required placeholder="Enter your password" [(ngModel)]="password" />
       </nz-form-control>
     </nz-form-item>
+    
+    <nz-form-item>
+        <nz-form-control [nzSpan]="24">
+          <label nz-checkbox nzFor="rememberMe">
+            <input type="checkbox" id="rememberMe" name="rememberMe" [(ngModel)]="rememberMe"> Remember Me
+          </label>
+        </nz-form-control>
+      </nz-form-item>
   
     <nz-form-item>
       <nz-form-control [nzSpan]="24">

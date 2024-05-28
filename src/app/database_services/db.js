@@ -87,3 +87,25 @@ exports.deleteEmployee = async (id) => {
         console.log('Error: ' + err);
     }
 }
+
+exports.loginUser = async (username, password ) => {
+    console.log('Logging in user', { username, password });
+    const pool = new sql.ConnectionPool(config);
+    try {
+        await pool.connect();
+        console.log('Connected to database');
+
+        const request = pool.request();
+        request.input('username', sql.NVarChar, username);
+        request.input('password', sql.NVarChar, password);
+
+        const result = await request.query('SELECT * FROM Users WHERE username = @username AND password = @password');
+        if(result.recordset.length === 0) {
+           return false;
+        }
+        return true;
+        
+    } catch (err) {
+        console.log('Error: ' + err);
+    }
+}

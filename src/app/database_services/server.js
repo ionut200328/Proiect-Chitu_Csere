@@ -2,6 +2,7 @@ const { insertEmployee } = require('./db.js');
 const { getEmployees } = require('./db.js');
 const { updateEmployee } = require('./db.js');
 const { deleteEmployee } = require('./db.js');
+const { loginUser } = require('./db.js');
 
 const express = require('express');
 const cors = require('cors');
@@ -36,6 +37,17 @@ app.delete('/deleteEmployee', async (req, res) => {
     console.log('Received request to delete employee', { id });
     deleteEmployee(id);
     res.status(200).json({ message: 'Employee deleted' });
+});
+
+app.post('/loginUser', async (req, res) => {
+    const { username, password } = req.body;
+    console.log('Received request to login', { username, password });
+    const loginSuccessful = await loginUser(username, password);
+    if (loginSuccessful) {
+        res.status(200).json({ message: 'Login successful' });
+    } else {
+        res.status(401).json({ message: 'Login failed' });
+    }
 });
 
 app.listen(PORT, () => {

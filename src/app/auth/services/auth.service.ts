@@ -34,4 +34,8 @@ export class AuthService {
     this.router.navigateByUrl('/');
   }
 
+  login(username: string, password: string): Observable<any> {
+    return this.httpClient.post('http://localhost:3003/loginUser', { username, password });
+  }
+
 }

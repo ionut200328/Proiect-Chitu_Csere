@@ -30,7 +30,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzModalModule,
 
     // *required for forms!
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
 })
 export class TableModule { }

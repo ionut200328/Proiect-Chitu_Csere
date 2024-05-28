@@ -1,55 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { FormularComponent } from '../formular/formular.component';
-import { Jobs } from '../helpers/modals/Jobs';
+import { Employee } from '../helpers/modals/Employee';
 import { waitForAsync } from '@angular/core/testing';
-import { JobService } from '../helpers/job-service.service';
+import { EmployeeService } from '../helpers/employee-service.service';
+import { BehaviorSubject } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-tabel',
   templateUrl: './tabel.component.html',
   styleUrls: ['./tabel.component.scss']
 })
-export class TabelComponent {
+export class TabelComponent implements OnInit {
 
-  jobs: Jobs[] = [];
+  employees: BehaviorSubject<Employee[]> = new BehaviorSubject<Employee[]>([]);
+  isLoaded: boolean = false;
 
-  constructor(private modalService: NzModalService, private jobService: JobService) { }
+  constructor(private modalService: NzModalService, private employeeService: EmployeeService,
+    private messageService: NzMessageService
+  ) { }
+
+  ngOnInit() {
+    this.getEmployees();
+    console.log(this.employees);
+  }
+
+  getEmployees() {
+    this.employeeService.getEmployees().subscribe({
+      next: (employees) => {
+        this.isLoaded = true;
+        this.employees.next(employees);
+        this.messageService.success('Employees loaded successfully');
+      },
+      error: () => {
+        this.messageService.error('Error loading employees');
+      }
+    });
+  }
 
   addJob() {
     this.modalService.create({
-      nzTitle: 'Add User',
-      nzContent: FormularComponent
+      nzTitle: 'Add Employee',
+      nzContent: FormularComponent,
+      nzData: { isEdit: false, employee: {} as Employee },
     });
     //wait for the modal to close
-    waitForAsync(() => {
-      this.get();
-    });
   }
 
-  getJobs = async () => {
 
-    const response = await fetch('http://localhost:3003/getEmployees', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (!response.ok) {
-      console.log('Error');
-    }
-    const data = await response.json();
-    return data;
-  }
-
-  ngOnInit() {
-    this.jobService.getJobs().subscribe((jobs) => {
-      this.jobs = jobs;
-    });
-  }
-
-  async get() {
-    this.jobs = await this.getJobs();
-    console.log(this.jobs);
-  }
 }

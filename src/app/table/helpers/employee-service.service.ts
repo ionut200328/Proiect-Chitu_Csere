@@ -88,19 +88,21 @@ export class EmployeeService {
   addEmployee(employee: Employee): Observable<Employee> {
     // Call your API to add the job
     // Then emit the new job list
-    console.log(employee);
     return this.httpClient.post<Employee>('http://localhost:3003/insertEmployee', employee);
   }
 
   editEmployee(employee: Employee): Observable<Employee> {
     // Call your API to edit the job
     // Then emit the new job list
+    console.log("editEmployee");
+    console.log(employee);
     return this.httpClient.put<Employee>('http://localhost:3003/updateEmployee', employee);
   }
 
   deleteEmployee(id: number): Observable<number> {
     // Call your API to delete the job
     // Then emit the new job list
+    console.log("deleteEmployee" + id);
     return this.httpClient.delete<number>('http://localhost:3003/deleteEmployee', { body: { id } });
   }
 }

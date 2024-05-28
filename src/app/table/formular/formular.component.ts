@@ -13,18 +13,13 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./formular.component.scss']
 })
 export class FormularComponent implements OnInit {
+
   @Input() employee: Employee = {} as Employee;
   @Input() isEdit: boolean = false;
 
   readonly nzModalData = inject(NZ_MODAL_DATA);
 
-  form: FormGroup = this.fb.group({
-    nume: ['', [Validators.required, LetterValidator]],
-    prenume: ['', [Validators.required, LetterValidator]],
-    email: ['', [Validators.required, Validators.email]],
-    telefon: ['', [Validators.required, NumberValidator]],
-    functie: ['', [Validators.required, LetterValidator]],
-  });
+  form!: FormGroup;
 
   constructor(private fb: FormBuilder, private employeeService: EmployeeService,
     private messageService: NzMessageService, private modalRef: NzModalRef) { }
@@ -37,12 +32,12 @@ export class FormularComponent implements OnInit {
 
   createForm(employee?: Employee): void {
     console.log(employee);
-    this.form.setValue({
-      nume: employee?.nume || '',
-      prenume: employee?.prenume || '',
-      email: employee?.email || '',
-      telefon: employee?.telefon || '',
-      functie: employee?.functie || '',
+    this.form = this.fb.group({
+      nume: [employee?.nume, [Validators.required, LetterValidator]],
+      prenume: [employee?.prenume, [Validators.required, LetterValidator]],
+      email: [employee?.email, [Validators.required, Validators.email]],
+      telefon: [employee?.telefon, [Validators.required, NumberValidator]],
+      functie: [employee?.functie, [Validators.required, LetterValidator]],
     });
   }
 
@@ -62,7 +57,8 @@ export class FormularComponent implements OnInit {
 
   editEmployee(): void {
     if (this.form.valid) {
-      this.employeeService.editEmployee(this.form.value).subscribe({
+      this.employee = { ...this.employee, ...this.form.value };
+      this.employeeService.editEmployee(this.employee).subscribe({
         next: () => {
           this.messageService.success('Employee edited successfully');
           this.modalRef.close();
@@ -72,6 +68,7 @@ export class FormularComponent implements OnInit {
         }
       });
     }
+
   }
 
   get nume(): AbstractControl {

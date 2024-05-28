@@ -1,7 +1,42 @@
 <p>tabel works!</p>
-<button nz-button nzType="primary" (click)="addJob()">
+<button nz-button nzType="primary" (click)="addEmployee()">
     <i nz-icon nzType="plus" nzTheme="outline"></i>
 </button>
 
+<nz-table #basicTable 
+    [nzData]="(employees | async) ?? []"
+    [nzBordered]="true"
+    [nzSize]="'small'"
+    [nzPageSize]="6"
+    [nzPageIndex]="pageIndex"
+    (nzPageIndexChange)="onPageChange($event)">
+    <thead>
+        <tr>
+            <th nzWidth="25%">Nume</th>
+            <th nzWidth="25%">Prenume</th>
+            <th nzWidth="25%">Email</th>
+            <th nzWidth="25%">Telefon</th>
+            <th nzWidth="25%">Funcție</th>
+            <th nzWidth="25%">Acțiuni</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let employee of (employees | async)?.slice((pageIndex-1)*6, pageIndex*6) ?? []">
+            <td>{{ employee.nume }}</td>
+            <td>{{ employee.prenume }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.telefon }}</td>
+            <td>{{ employee.functie }}</td>
+            <td>
+                <button nz-button nzType="primary" (click)="editEmployee(employee)">
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </button>
+                <button nz-button nzType="primary" (click)="deleteEmployee(employee.id)">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
 
 

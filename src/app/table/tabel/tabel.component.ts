@@ -17,6 +17,8 @@ export class TabelComponent implements OnInit {
   employees: BehaviorSubject<Employee[]> = new BehaviorSubject<Employee[]>([]);
   isLoaded: boolean = false;
 
+  pageIndex = 1;
+
   constructor(private modalService: NzModalService, private employeeService: EmployeeService,
     private messageService: NzMessageService
   ) { }
@@ -39,14 +41,43 @@ export class TabelComponent implements OnInit {
     });
   }
 
-  addJob() {
-    this.modalService.create({
+  addEmployee() {
+    const modal = this.modalService.create({
       nzTitle: 'Add Employee',
       nzContent: FormularComponent,
       nzData: { isEdit: false, employee: {} as Employee },
     });
-    //wait for the modal to close
+
+    modal.afterClose.subscribe(() => {
+      this.getEmployees();
+    });
+
   }
 
+  editEmployee(employee: Employee) {
+    const modal = this.modalService.create({
+      nzTitle: 'Edit Employee',
+      nzContent: FormularComponent,
+      nzData: { isEdit: true, employee: employee },
+    });
+    modal.afterClose.subscribe(() => {
+      this.getEmployees();
+    });
+  }
 
+  deleteEmployee(id: number) {
+    this.employeeService.deleteEmployee(id).subscribe({
+      next: () => {
+        this.messageService.success('Employee deleted successfully');
+        this.getEmployees();
+      },
+      error: () => {
+        this.messageService.error('Error deleting employee');
+      }
+    });
+  }
+
+  onPageChange(pageIndex: number) {
+    this.pageIndex = pageIndex;
+  }
 }

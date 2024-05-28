@@ -1,13 +1,41 @@
 <div *ngIf="form">
-    <form [formGroup]="form" (ngSubmit)="add()">
-    <div class="form-group">
-        <label for="nume">Name</label>
-        <input type="text" class="form-control" id="nume" formControlName="nume">
-    </div>
-    <div class="form-group">
-        <label for="prenume">Prenume</label>
-        <input type="text" class="form-control" id="prenume" formControlName="prenume">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <form [formGroup]="form" (ngSubmit)="isEdit ? editEmployee() : addEmployee()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nume">Nume</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Numele este obligatoriu și conține doar litere">
+                <input nz-input formControlName="nume" id="nume" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="prenume">Prenume</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Prenumele este obligatoriu și conține doar litere">
+                <input nz-input formControlName="prenume" id="prenume" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">Email</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Email-ul este obligatoriu și trebuie să fie valid">
+                <input nz-input formControlName="email" id="email" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="telefon">Telefon</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Telefonul este obligatoriu și trebuie să conțină doar cifre">
+                <input nz-input formControlName="telefon" id="telefon" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="functie">Funcție</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Funcția este obligatorie">
+                <input nz-input formControlName="functie" id="functie" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button nzType="primary" type="submit" disabled="{{ form.invalid }}">
+                    {{ isEdit ? 'Edit' : 'Add' }}
+                </button>
+            </nz-form-control>
+        </nz-form-item>
     </form>
 </div>

@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { JobService } from '../helpers/job-service.service';
+import { Component, Inject, Input, OnInit, Output, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { EmployeeService } from '../helpers/employee-service.service';
+import { LetterValidator, NumberValidator } from '../helpers/form.helper';
+import { Employee } from '../helpers/modals/Employee';
+import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 
 @Component({
@@ -9,45 +13,85 @@ import { JobService } from '../helpers/job-service.service';
   styleUrls: ['./formular.component.scss']
 })
 export class FormularComponent implements OnInit {
+  @Input() employee: Employee = {} as Employee;
+  @Input() isEdit: boolean = false;
 
-  form!: FormGroup;
+  readonly nzModalData = inject(NZ_MODAL_DATA);
 
-  constructor(private fb: FormBuilder, private jobService: JobService) { }
+  form: FormGroup = this.fb.group({
+    nume: ['', [Validators.required, LetterValidator]],
+    prenume: ['', [Validators.required, LetterValidator]],
+    email: ['', [Validators.required, Validators.email]],
+    telefon: ['', [Validators.required, NumberValidator]],
+    functie: ['', [Validators.required, LetterValidator]],
+  });
+
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService,
+    private messageService: NzMessageService, private modalRef: NzModalRef) { }
 
   ngOnInit(): void {
-    this.createForm();
-    console.log(this.form);
+    this.isEdit = this.nzModalData.isEdit;
+    this.employee = this.nzModalData.employee;
+    this.createForm(this.employee);
   }
 
-  createForm(): void {
-    this.form = this.fb.group({
-      nume: [null, [Validators.required]],
-      prenume: [null, [Validators.required]],
+  createForm(employee?: Employee): void {
+    console.log(employee);
+    this.form.setValue({
+      nume: employee?.nume || '',
+      prenume: employee?.prenume || '',
+      email: employee?.email || '',
+      telefon: employee?.telefon || '',
+      functie: employee?.functie || '',
     });
   }
 
-  addJob = async (event: any) => {
-    console.log('Form values', this.form.value);
-    event.preventDefault();
-
-    const response = await fetch('http://localhost:3003/insertEmployee', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(this.form.value),
-    });
-
-    if (response.ok) {
-      this.jobService.addJob(this.form.value);
+  addEmployee(): void {
+    if (this.form.valid) {
+      this.employeeService.addEmployee(this.form.value).subscribe({
+        next: () => {
+          this.messageService.success('Employee added successfully');
+          this.modalRef.close();
+        },
+        error: () => {
+          this.messageService.error('Error adding employee');
+        }
+      });
     }
-    else {
-      console.log('Error');
-    }
-  };
+  }
 
-  add() {
-    console.log('Form values', this.form.value);
-    this.addJob(event);
+  editEmployee(): void {
+    if (this.form.valid) {
+      this.employeeService.editEmployee(this.form.value).subscribe({
+        next: () => {
+          this.messageService.success('Employee edited successfully');
+          this.modalRef.close();
+        },
+        error: () => {
+          this.messageService.error('Error editing employee');
+        }
+      });
+    }
+  }
+
+  get nume(): AbstractControl {
+    return this.form.get('nume') as AbstractControl;
+  }
+
+  get prenume(): AbstractControl {
+    return this.form.get('prenume') as AbstractControl;
+  }
+
+  get email(): AbstractControl {
+    return this.form.get('email') as AbstractControl;
+  }
+
+  get telefon(): AbstractControl {
+    return this.form.get('telefon') as AbstractControl;
+  }
+
+  get functie(): AbstractControl {
+    return this.form.get('functie') as AbstractControl;
   }
 }
+

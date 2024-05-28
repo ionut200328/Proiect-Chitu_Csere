@@ -12,6 +12,7 @@ import { AuthService } from './services/auth.service';
 export class AuthComponent {
   name: string = '';
   password: string = '';
+  rememberMe: boolean = false;
 
   constructor(
     private notification: NzNotificationService,
@@ -28,7 +29,9 @@ export class AuthComponent {
     if (this.name === hardcodedUsername && this.password === hardcodedPassword) {
       this.notification.success('Login Successful', 'You have logged in successfully.');
       sessionStorage.setItem('userToken','token')
-      this.router.navigate(['table']);
+      if(this.rememberMe)
+        localStorage.setItem('userToken','token')
+      this.router.navigate(['']);
     } else {
       this.notification.error('Login Failed', 'Incorrect username or password.');
     }

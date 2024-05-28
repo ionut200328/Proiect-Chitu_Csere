@@ -4,12 +4,11 @@ import { AuthGuard } from './auth/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'table',
+    path: '',
     loadChildren: () =>
       import('./table/table.module').then((m) => m.TableModule),canActivate:[AuthGuard]
   },
   { path: 'login', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
-  {path:'',redirectTo:'/login',pathMatch:'full'},
   
 ];
 

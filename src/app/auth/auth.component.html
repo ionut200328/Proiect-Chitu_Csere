@@ -1,21 +1,23 @@
 <!-- auth.component.html -->
+<div id="auth-page" *ngIf="form" >
 <form [formGroup]="form" nz-form [nzLayout]="'vertical'" (ngSubmit)="onSubmit()">
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">Utilizator</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Email-ul este obligatoriu">
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email" nzRequired="">Utilizator</nz-form-label>
+    <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback nzErrorTip="Email-ul este obligatoriu">
       <input nz-input formControlName="email" id="email" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="parola">Parolă</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Parola este obligatorie">
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="parola" nzRequired>Parolă</nz-form-label>
+    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Parola este obligatorie">
       <input nz-input formControlName="parola" id="parola" type="password" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-control [nzSpan]="24">
       <label nz-checkbox nzFor="rememberMe">
-        Remember Me  <input type="checkbox" id="rememberMe" name="rememberMe" formControlName="rememberMe">
+        Remember Me  
+        <input type="checkbox" id="rememberMe" name="rememberMe" formControlName="rememberMe">
       </label>
     </nz-form-control>
   </nz-form-item>
@@ -30,3 +32,4 @@
     </nz-form-control>
   </nz-form-item>
 </form>
+</div>

@@ -1,0 +1,14 @@
+#register-page{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-link {
+    color: #1890ff;
+    cursor: pointer;
+    text-decoration: underline;
+}

@@ -1,15 +1,22 @@
-<p>tabel works!</p>
-<button nz-button nzType="primary" (click)="addEmployee()">
-    <i nz-icon nzType="plus" nzTheme="outline"></i>
-</button>
+<h1>Welcome, {{ userName }}</h1>
+<div>
+    <button nz-button nzType="primary" (click)="addEmployee()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+    </button>
+</div>
+<div class="logout-button">
+    <button nz-button nzType="primary" (click)="logout()">
+        <i nz-icon nzType="logout" nzTheme="outline"></i>
+    </button>
+</div>
 
 <nz-table #basicTable 
     [nzData]="(employees | async) ?? []"
     [nzBordered]="true"
     [nzSize]="'small'"
-    [nzPageSize]="6"
+    [nzPageSize]="8"
     [nzPageIndex]="pageIndex"
-    (nzPageIndexChange)="onPageChange($event)">
+    (nzPageIndexChange)="handlePageIndexChange($event)">
     <thead>
         <tr>
             <th nzWidth="25%">Nume</th>
@@ -21,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let employee of (employees | async)?.slice((pageIndex-1)*6, pageIndex*6) ?? []">
+        <tr *ngFor="let employee of (employees | async)?.slice((pageIndex-1)*8, pageIndex*8) ?? []">
             <td>{{ employee.nume }}</td>
             <td>{{ employee.prenume }}</td>
             <td>{{ employee.email }}</td>

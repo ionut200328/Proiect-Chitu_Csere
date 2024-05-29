@@ -3,7 +3,8 @@ const { getEmployees } = require('./db.js');
 const { updateEmployee } = require('./db.js');
 const { deleteEmployee } = require('./db.js');
 const { loginUser } = require('./db.js');
-const {registerUser}=require('./db.js')
+const {registerUser} = require('./db.js')
+const {userExists} = require('./db.js')
 
 const express = require('express');
 const cors = require('cors');
@@ -43,10 +44,10 @@ app.delete('/deleteEmployee', async (req, res) => {
 app.post('/loginUser', async (req, res) => {
     const { email, parola } = req.body;
     console.log('Received request to login', { email, parola });
-    const loginSuccessful = await loginUser(email,parola);
-    if (loginSuccessful) {
-        res.status(200).json({ message: 'Login successful' });
-    } else {
+    const loginResult = await loginUser(email,parola);
+    if(loginResult.loginSuccessful){
+        res.status(200).json({ message: 'Login successful' , name: loginResult.prenume});
+    } else{
         res.status(401).json({ message: 'Login failed' });
     }
 });
@@ -59,6 +60,17 @@ app.post('/registerUser', async (req, res) => {
         res.status(200).json({ message: 'User registered successfully' });
     } else{
         res.status(500).json({ message: 'Error registering user' });
+    }
+});
+
+app.post('/userExists', async (req, res) => {
+    const { email } = req.body;
+    console.log('Received request to check if user exists', { email });
+    const userExistsResult=await userExists(email)
+    if(userExistsResult){
+        res.status(409).json({ message: 'User exists' });
+    } else{
+        res.status(200).json({ message: 'User does not exist' });
     }
 });
 

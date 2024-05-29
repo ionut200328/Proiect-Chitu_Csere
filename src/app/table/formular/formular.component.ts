@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { EmployeeService } from '../helpers/employee-service.service';
 import { LetterValidator, NumberValidator } from '../helpers/form.helper';
@@ -28,6 +28,7 @@ export class FormularComponent implements OnInit {
     this.isEdit = this.nzModalData.isEdit;
     this.employee = this.nzModalData.employee;
     this.createForm(this.employee);
+
   }
 
   createForm(employee?: Employee): void {

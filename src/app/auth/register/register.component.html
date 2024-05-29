@@ -1,76 +1,107 @@
-<div *ngIf="userForm">
-    <form nz-form [formGroup]="userForm" (ngSubmit)="addNewUser()">
+<div *ngIf="userForm" id="register-page">
+    <form nz-form [formGroup]="userForm" nz-form [nzLayout]="'vertical'" (ngSubmit)="addNewUser()">
       <!-- Email Field -->
-      <nz-form-item>
-        <nz-form-control>
-          <nz-input-group nzPrefixIcon="user">
-            <input formControlName="Email" nz-input placeholder="Input email" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-      <p *ngIf="email?.touched && userForm.controls['Email'].hasError('invalidEmail')" class="error-message">
-        Please enter a valid email
-      </p>
-      <p *ngIf="email?.touched && userForm.controls['Email'].hasError('required')" class="error-message">
-        This field is required
-      </p>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Email" nzRequired>Email</nz-form-label>
+      <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback [nzErrorTip]="userErrorTip">
+        <nz-input-group nzPrefixIcon="user">
+          <input formControlName="Email" nz-input placeholder="Input email" />
+        </nz-input-group>
+        <ng-template #userErrorTip let-control>
+          <div *ngIf="control.hasError('required')">
+            Email-ul este obligatoriu!
+          </div>
+          <div *ngIf="control.hasError('email')">
+            Email-ul nu este valid!
+          </div>
+          <div *ngIf="control.hasError('userExists')">
+            Email-ul este deja folosit!
+          </div>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
   
       <!-- Parola Field -->
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Parola" nzRequired>Parolă</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback [nzErrorTip]="passwordErrorTip">
           <nz-input-group nzPrefixIcon="lock">
             <input formControlName="Parola" nz-input placeholder="Input password" type="password" />
           </nz-input-group>
         </nz-form-control>
+        <ng-template #passwordErrorTip let-control>
+          <div *ngIf="control.hasError('required')">
+            Parola este obligatorie!
+          </div>
+          <div *ngIf="control.hasError('minlength')">
+            Parola trebuie să aibă cel puțin 6 caractere!
+          </div>
+          <div *ngIf="control.hasError('invalidPassword')">
+            Parola trebuie să conțină cel puțin o literă mare, 
+            <br>o literă mică, un număr și un caracter special!
+          </div>
+        </ng-template>
       </nz-form-item>
-      <p *ngIf="parola?.touched && userForm.controls['Parola'].hasError('required')" class="error-message">
-        This field is required
-      </p>
-  
+      
       <!-- Confirm Parola Field -->
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="ConfirmParola" nzRequired>Confirm Parolă</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback [nzErrorTip]="confirmPasswordErrorTip">
           <nz-input-group nzPrefixIcon="lock">
             <input formControlName="ConfirmParola" nz-input placeholder="Confirm password" type="password" />
           </nz-input-group>
         </nz-form-control>
+        <ng-template #confirmPasswordErrorTip let-control>
+          <div *ngIf="control.hasError('required')">
+            Confirmarea parolei este obligatorie!
+          </div>
+          <div *ngIf="control.hasError('passwordMismatch')">
+            Parolele nu se potrivesc!
+          </div>
+        </ng-template>
       </nz-form-item>
-      <p *ngIf="confirmParola?.touched && userForm.controls['ConfirmParola'].hasError('required')" class="error-message">
-        This field is required
-      </p>
-      <p *ngIf="userForm.hasError('passwordMismatch') && confirmParola?.touched" class="error-message">
-        Passwords do not match
-      </p>
   
       <!-- Nume Field -->
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Nume" nzRequired>Nume</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback [nzErrorTip]="numeErrorTip">
           <nz-input-group nzPrefixIcon="user">
             <input formControlName="Nume" nz-input placeholder="Input last name" />
           </nz-input-group>
         </nz-form-control>
+        <ng-template #numeErrorTip let-control>
+          <div *ngIf="control.hasError('required')">
+            Numele este obligatoriu!
+          </div>
+        </ng-template>
       </nz-form-item>
-      <p *ngIf="nume?.touched && userForm.controls['Nume'].hasError('required')" class="error-message">
-        This field is required
-      </p>
-  
       <!-- Prenume Field -->
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Prenume" nzRequired>Prenume</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback [nzErrorTip]="prenumeErrorTip">
           <nz-input-group nzPrefixIcon="user">
             <input formControlName="Prenume" nz-input placeholder="Input first name" />
           </nz-input-group>
         </nz-form-control>
+        <ng-template #prenumeErrorTip let-control>
+          <div *ngIf="control.hasError('required')">
+            Prenumele este obligatoriu!
+          </div>
+        </ng-template>
       </nz-form-item>
-      <p *ngIf="prenume?.touched && userForm.controls['Prenume'].hasError('required')" class="error-message">
-        This field is required
-      </p>
   
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-control [nzSpan]="24">
           <button nz-button nzType="primary" [disabled]="!userForm.valid">
             Submit
           </button>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Navigation Link -->
+      <nz-form-item>
+        <nz-form-control [nzSpan]="24">
+          <a (click)="navigateToLogin()" class="login-link">Already have an account? Login now</a>
         </nz-form-control>
       </nz-form-item>
     </form>

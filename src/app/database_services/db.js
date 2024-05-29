@@ -1,9 +1,11 @@
 const sql = require('mssql');
 
 const config = {
-    user: 'angular',
+    // user: 'angular',
+    user: 'ionut',
     password: '1q2w3e',
-    server: 'SKY\\MSSQLSERVER01',
+    // server: 'SKY\\MSSQLSERVER01',
+    server: 'KITZU-LAPTOP',
     database: 'dbJobs',
     options: {
         encrypt: false,
@@ -99,11 +101,11 @@ exports.loginUser = async (email, parola ) => {
         request.input('email', sql.NVarChar, email);
         request.input('parola', sql.NVarChar, parola);
 
-        const result = await request.query('SELECT * FROM Users WHERE email = @email AND parola = @parola');
+        const result = await request.query('SELECT prenume FROM Users WHERE email = @email AND parola = @parola');
         if(result.recordset.length === 0) {
-           return false;
+           return {loginSuccessful:false};
         }
-        return true;
+        return {loginSuccessful:true, prenume:result.recordset[0].prenume};
         
     } catch (err) {
         console.log('Error: ' + err);
@@ -134,3 +136,24 @@ exports.registerUser = async (nume, prenume, email, parola) => {
         pool.close();
     }
 };
+
+exports.userExists = async (email) => {
+    console.log('Checking if user exists', { email });
+    const pool = new sql.ConnectionPool(config);
+    try {
+        await pool.connect();
+        console.log('Connected to database');
+
+        const request = pool.request();
+        request.input('email', sql.NVarChar, email);
+
+        const result = await request.query('SELECT * FROM Users WHERE email = @email');
+        if(result.recordset.length === 0) {
+           return false;
+        }
+        return true;
+        
+    } catch (err) {
+        console.log('Error: ' + err);
+    }
+}

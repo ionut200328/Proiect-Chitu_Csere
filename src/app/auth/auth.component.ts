@@ -28,7 +28,7 @@ export class AuthComponent implements OnInit {
 
   createForm(): void {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
       parola: ['', [Validators.required, /*Validators.minLength(6), Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')*/]],
       rememberMe: false
     });
@@ -70,10 +70,11 @@ export class AuthComponent implements OnInit {
       (user: User) => {
         // Login successful
         this.notification.success('Login Successful', 'You have logged in successfully.');
-        const token = this.authService.generateToken()
+        const token = this.authService.generateToken();
         sessionStorage.setItem('userToken', token);
         if (this.rememberMe.value) {
           localStorage.setItem('userToken', token);
+
         }
         this.router.navigate(['']);
       },

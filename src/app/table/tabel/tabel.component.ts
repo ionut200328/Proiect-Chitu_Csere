@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { FormularComponent } from '../formular/formular.component';
 import { Employee } from '../helpers/modals/Employee';
-import { waitForAsync } from '@angular/core/testing';
 import { EmployeeService } from '../helpers/employee-service.service';
 import { BehaviorSubject } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-tabel',
@@ -13,6 +13,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./tabel.component.scss']
 })
 export class TabelComponent implements OnInit {
+  @Output() pageIndexChange = new EventEmitter<number>();
+
+  userName!: string;
 
   employees: BehaviorSubject<Employee[]> = new BehaviorSubject<Employee[]>([]);
   isLoaded: boolean = false;
@@ -20,12 +23,13 @@ export class TabelComponent implements OnInit {
   pageIndex = 1;
 
   constructor(private modalService: NzModalService, private employeeService: EmployeeService,
-    private messageService: NzMessageService
+    private messageService: NzMessageService, private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.getEmployees();
     console.log(this.employees);
+    this.userName = this.authService.getUserName();
   }
 
   getEmployees() {
@@ -77,7 +81,15 @@ export class TabelComponent implements OnInit {
     });
   }
 
-  onPageChange(pageIndex: number) {
-    this.pageIndex = pageIndex;
+  changePage(index: number) {
+    this.pageIndexChange.emit(index);
+  }
+
+  handlePageIndexChange(index: number) {
+    this.pageIndex = index;
+  }
+
+  logout() {
+    this.authService.logOut();
   }
 }

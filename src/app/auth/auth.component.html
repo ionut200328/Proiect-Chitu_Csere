@@ -1,15 +1,15 @@
 <!-- auth.component.html -->
 <form [formGroup]="form" nz-form [nzLayout]="'vertical'" (ngSubmit)="onSubmit()">
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">Utilizator</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Numele este obligatoriu și conține doar litere">
-      <input nz-input formControlName="name" id="name" />
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">Utilizator</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Email-ul este obligatoriu">
+      <input nz-input formControlName="email" id="email" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password">Parolă</nz-form-label>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="parola">Parolă</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Parola este obligatorie">
-      <input nz-input formControlName="password" id="password" type="password" />
+      <input nz-input formControlName="parola" id="parola" type="password" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
@@ -22,6 +22,11 @@
   <nz-form-item>
     <nz-form-control [nzSpan]="24">
       <button nz-button nzType="primary" type="submit">Login</button>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzSpan]="24">
+      <a (click)="navigateToRegister()" class="register-link">No account? Register now</a>
     </nz-form-control>
   </nz-form-item>
 </form>

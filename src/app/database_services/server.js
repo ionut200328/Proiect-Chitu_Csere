@@ -3,6 +3,7 @@ const { getEmployees } = require('./db.js');
 const { updateEmployee } = require('./db.js');
 const { deleteEmployee } = require('./db.js');
 const { loginUser } = require('./db.js');
+const {registerUser}=require('./db.js')
 
 const express = require('express');
 const cors = require('cors');
@@ -40,13 +41,24 @@ app.delete('/deleteEmployee', async (req, res) => {
 });
 
 app.post('/loginUser', async (req, res) => {
-    const { username, password } = req.body;
-    console.log('Received request to login', { username, password });
-    const loginSuccessful = await loginUser(username, password);
+    const { email, parola } = req.body;
+    console.log('Received request to login', { email, parola });
+    const loginSuccessful = await loginUser(email,parola);
     if (loginSuccessful) {
         res.status(200).json({ message: 'Login successful' });
     } else {
         res.status(401).json({ message: 'Login failed' });
+    }
+});
+
+app.post('/registerUser', async (req, res) => {
+    const { nume, prenume, email, parola } = req.body;
+    console.log('Received request to register user', { nume, prenume, email, parola });
+    const registerSuccesful=await registerUser(nume,prenume,email,parola)
+    if(registerSuccesful){
+        res.status(200).json({ message: 'User registered successfully' });
+    } else{
+        res.status(500).json({ message: 'Error registering user' });
     }
 });
 

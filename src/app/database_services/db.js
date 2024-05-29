@@ -1,9 +1,9 @@
 const sql = require('mssql');
 
 const config = {
-    user: 'ionut',
+    user: 'angular',
     password: '1q2w3e',
-    server: 'KITZU-LAPTOP',
+    server: 'SKY\\MSSQLSERVER01',
     database: 'dbJobs',
     options: {
         encrypt: false,
@@ -88,18 +88,18 @@ exports.deleteEmployee = async (id) => {
     }
 }
 
-exports.loginUser = async (username, password ) => {
-    console.log('Logging in user', { username, password });
+exports.loginUser = async (email, parola ) => {
+    console.log('Logging in user', { email, parola });
     const pool = new sql.ConnectionPool(config);
     try {
         await pool.connect();
         console.log('Connected to database');
 
         const request = pool.request();
-        request.input('username', sql.NVarChar, username);
-        request.input('password', sql.NVarChar, password);
+        request.input('email', sql.NVarChar, email);
+        request.input('parola', sql.NVarChar, parola);
 
-        const result = await request.query('SELECT * FROM Users WHERE username = @username AND password = @password');
+        const result = await request.query('SELECT * FROM Users WHERE email = @email AND parola = @parola');
         if(result.recordset.length === 0) {
            return false;
         }
@@ -109,3 +109,28 @@ exports.loginUser = async (username, password ) => {
         console.log('Error: ' + err);
     }
 }
+exports.registerUser = async (nume, prenume, email, parola) => {
+    console.log('Inserting user', { nume, prenume, email, parola });
+    const pool = new sql.ConnectionPool(config);
+    try {
+        await pool.connect();
+        console.log('Connected to database');
+
+        const request = pool.request();
+        request.input('nume', sql.NVarChar, nume);
+        request.input('prenume', sql.NVarChar, prenume);
+        request.input('email', sql.NVarChar, email);
+        request.input('parola', sql.NVarChar, parola);
+
+        const result = await request.query('INSERT INTO Users (nume, prenume, email, parola) VALUES (@nume, @prenume, @email, @parola)');
+        console.log(result);
+        if(result.rowsAffected==1)
+            return true;
+        else
+            return false;
+    } catch (err) {
+        console.log('Error: ' + err);
+    } finally {
+        pool.close();
+    }
+};

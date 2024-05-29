@@ -34,8 +34,15 @@ export class AuthService {
     this.router.navigateByUrl('/');
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.httpClient.post('http://localhost:3003/loginUser', { username, password });
+  login(email: string, parola: string): Observable<any> {
+    return this.httpClient.post('http://localhost:3003/loginUser', { email, parola });
   }
-
+  register(nume: string, prenume: string, email: string, parola: string): Observable<any> {
+    return this.httpClient.post('http://localhost:3003/registerUser', { nume, prenume, email, parola });
+  }
+  generateToken(): string {
+    const timestamp = new Date().getTime();
+    const randomString = Math.random().toString(36).substring(7);
+    return `${timestamp}-${randomString}`;
+  }
 }

@@ -1,0 +1,78 @@
+<div *ngIf="userForm">
+    <form nz-form [formGroup]="userForm" (ngSubmit)="addNewUser()">
+      <!-- Email Field -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user">
+            <input formControlName="Email" nz-input placeholder="Input email" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <p *ngIf="email?.touched && userForm.controls['Email'].hasError('invalidEmail')" class="error-message">
+        Please enter a valid email
+      </p>
+      <p *ngIf="email?.touched && userForm.controls['Email'].hasError('required')" class="error-message">
+        This field is required
+      </p>
+  
+      <!-- Parola Field -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="lock">
+            <input formControlName="Parola" nz-input placeholder="Input password" type="password" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <p *ngIf="parola?.touched && userForm.controls['Parola'].hasError('required')" class="error-message">
+        This field is required
+      </p>
+  
+      <!-- Confirm Parola Field -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="lock">
+            <input formControlName="ConfirmParola" nz-input placeholder="Confirm password" type="password" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <p *ngIf="confirmParola?.touched && userForm.controls['ConfirmParola'].hasError('required')" class="error-message">
+        This field is required
+      </p>
+      <p *ngIf="userForm.hasError('passwordMismatch') && confirmParola?.touched" class="error-message">
+        Passwords do not match
+      </p>
+  
+      <!-- Nume Field -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user">
+            <input formControlName="Nume" nz-input placeholder="Input last name" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <p *ngIf="nume?.touched && userForm.controls['Nume'].hasError('required')" class="error-message">
+        This field is required
+      </p>
+  
+      <!-- Prenume Field -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user">
+            <input formControlName="Prenume" nz-input placeholder="Input first name" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <p *ngIf="prenume?.touched && userForm.controls['Prenume'].hasError('required')" class="error-message">
+        This field is required
+      </p>
+  
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" [disabled]="!userForm.valid">
+            Submit
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+  

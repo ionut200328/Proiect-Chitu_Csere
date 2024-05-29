@@ -2,7 +2,7 @@
 <div id="auth-page" *ngIf="form" >
 <form [formGroup]="form" nz-form [nzLayout]="'vertical'" (ngSubmit)="onSubmit()">
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email" nzRequired="">Utilizator</nz-form-label>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email" nzRequired="">Email</nz-form-label>
     <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback nzErrorTip="Email-ul este obligatoriu">
       <input nz-input formControlName="email" id="email" />
     </nz-form-control>
